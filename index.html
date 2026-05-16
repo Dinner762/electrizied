@@ -3,34 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uni's Portfolio - Electrified Blue Theme</title>
+    <title>Electrizied's Portfolio</title>
     <style>
         /* 1. Global Reset & Theme Variables */
         :root {
             --light-blue: #E0FFFF; /* Electrified light blue */
             --dark-blue: #00008B; /* Dark blue */
             --background: #000212; /* Very dark blue, almost black */
+            --panel-bg: rgba(0, 5, 25, 0.7); /* Slightly lighter background for cards */
             --nav-text: #fff;
             --button-glow: rgba(224, 255, 255, 0.4);
             --title-glow: rgba(224, 255, 255, 0.5);
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             background-color: var(--background);
-            color: #fff;
+            color: #ddd;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden; /* For a clean single-page look */
+            line-height: 1.6;
         }
 
         /* 2. Star Background Effect */
         body::before {
             content: '';
-            position: absolute;
+            position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-image: 
                 radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 1px),
@@ -50,9 +52,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: rgba(0, 0, 18, 0.8); /* Semi-transparent header */
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            z-index: 10;
+            background-color: rgba(0, 0, 18, 0.9);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .logo {
@@ -84,19 +88,47 @@
             color: var(--light-blue);
         }
 
-        /* 4. Main Content Area */
-        main {
-            flex: 1;
+        /* 4. Layout & Sections */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        section {
+            padding-top: 80px; /* Offset for sticky nav */
+            margin-bottom: 60px;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(90deg, var(--light-blue) 0%, var(--dark-blue) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .panel {
+            background-color: var(--panel-bg);
+            border: 1px solid rgba(224, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+        }
+
+        /* Hero Section */
+        .hero {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 50px;
+            min-height: 80vh;
             text-align: center;
-            position: relative;
         }
 
-        /* Normal Content Styles */
         .hero-title {
             font-size: 5em;
             margin: 0;
@@ -108,26 +140,29 @@
         }
 
         .hero-subtitle {
-            font-size: 1.5em;
+            font-size: 1.2em;
             color: #ddd;
             margin-top: 15px;
             max-width: 800px;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
 
+        /* Buttons */
         .buttons-container {
             display: flex;
-            gap: 30px;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .btn {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
-            padding: 18px 35px;
+            gap: 10px;
+            padding: 15px 30px;
             border-radius: 50px;
-            font-size: 1.2em;
+            font-size: 1.1em;
             font-weight: bold;
             text-decoration: none;
             color: #fff;
@@ -137,109 +172,273 @@
             border: 2px solid transparent;
         }
 
-        /* Electrified Button Gradients */
         .btn-discord {
             background: linear-gradient(135deg, var(--dark-blue) 0%, var(--light-blue) 100%);
             box-shadow: 0 0 15px var(--button-glow);
         }
 
-        .btn-roblox {
-            background: linear-gradient(135deg, var(--background) 0%, var(--light-blue) 100%);
-            box-shadow: 0 0 15px var(--button-glow);
-            border: 2px solid rgba(224, 255, 255, 0.3);
-        }
-
-        /* Placeholder Icons (using basic text for compatibility, replace with SVGs later) */
-        .btn-icon {
-            font-size: 1.2em;
+        .btn-outline {
+            background: linear-gradient(135deg, var(--background) 0%, var(--dark-blue) 100%);
+            border: 2px solid var(--light-blue);
         }
 
         .btn:hover {
             transform: translateY(-5px);
-        }
-
-        .btn-discord:hover {
             box-shadow: 0 0 25px var(--button-glow);
         }
 
-        .btn-roblox:hover {
-            box-shadow: 0 0 25px var(--button-glow);
+        /* Carrd-Style Image Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
         }
 
-        /* 5. "Soon" Page Style */
-        #placeholder-text {
-            display: none; /* Hidden by default */
-            font-size: 5em;
+        .gallery-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            transition: transform 0.3s;
+            border: 1px solid rgba(224, 255, 255, 0.2);
+            background-color: #000;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            border-color: var(--light-blue);
+            z-index: 2;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: var(--light-blue);
+            text-align: center;
+            padding: 8px 0;
+            font-size: 0.9em;
             font-weight: bold;
-            color: rgba(224, 255, 255, 0.2); /* Muted electrified light blue */
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 0 0 10px rgba(224, 255, 255, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s;
         }
 
+        .gallery-item:hover .gallery-caption {
+            opacity: 1;
+        }
+
+        /* Text formatting */
+        ul.custom-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        ul.custom-list li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        ul.custom-list li::before {
+            content: "⚡";
+            position: absolute;
+            left: 0;
+            color: var(--light-blue);
+        }
+
+        .good-exp { color: #50fa7b; font-weight: bold; }
+        .bad-exp { color: #ff5555; font-weight: bold; }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background-color: rgba(0, 0, 18, 0.9);
+            border-top: 1px solid #333;
+            margin-top: 50px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+            .hero-title {
+                font-size: 3em;
+            }
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">Uni's Portfolio</div>
+    <div class="logo">Electrizied</div>
     <nav>
         <ul>
-            <li><a href="#" id="home-link">Home</a></li>
-            <li><a href="#" class="soon-link">About</a></li>
-            <li><a href="#" class="soon-link">Skills</a></li>
-            <li><a href="#" class="soon-link">Animations</a></li>
-            <li><a href="#" class="soon-link">Custom Rigs</a></li>
-            <li><a href="#" class="soon-link">Contact</a></li>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
 </header>
 
 <main>
-    <div id="page-content">
-        <h1 class="hero-title">Uni's Portfolio</h1>
-        <p class="hero-subtitle">Professional Animation & Game Development | 6+ Years Experience</p>
-        <div class="buttons-container">
-            <a href="#" class="btn btn-discord">
-                <span class="btn-icon">💬</span> Contact on Discord
-            </a>
-            <a href="#" class="btn btn-roblox">
-                <span class="btn-icon">🎮</span> View Roblox Profile
-            </a>
-        </div>
-        <div id="placeholder-text">Soon</div>
+    <div class="container">
+        <section id="home" class="hero">
+            <h1 class="hero-title">Electrizied</h1>
+            <p class="hero-subtitle">
+                Welcome To My Experience. <br>
+                I have done many things to leave a mark. Owner of Unknown Lands, Helper/Builder, Coder, and Modeler.
+            </p>
+            <div class="buttons-container">
+                <a href="#about" class="btn btn-outline">Read My Story</a>
+                <a href="#gallery" class="btn btn-outline">View My Work</a>
+                <a href="https://guns.lol/electrizied" target="_blank" class="btn btn-discord">All Socials</a>
+            </div>
+        </section>
+
+        <section id="about">
+            <h2>About Me</h2>
+            <div class="panel">
+                <p>I am also known as <strong>Dinnerbone4995</strong>. I've been building and coding for 5-6 years! My Minecraft account is around 4-6 years old. I do amazing in smaller builds, but I can do fine with ginormous terrain! I am best at floating things such as bedwars, skywars, or temples.</p>
+                <p>I usually do work for free, but if I am applying for a job, I don't mind if you pay or not. I've had a lot of experience in servers.</p>
+                
+                <h3>I can offer quite a lot more than building:</h3>
+                <ul class="custom-list">
+                    <li>Code / Develop Plugins & GUIs</li>
+                    <li>3D Model</li>
+                    <li>Manage Teams</li>
+                    <li>Communicate Well</li>
+                    <li>Own a Server (Unknown Lands)</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="gallery">
+            <h2>My Work & Designs</h2>
+            
+            <div class="panel">
+                <h3>Architecture & Minecraft Builds</h3>
+                <p>Examples from servers I've managed and built for.</p>
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="https://electriziedport.carrd.co/assets/images/image01.jpg" alt="Underwater City From above">
+                        <div class="gallery-caption">Underwater City (Above)</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://electriziedport.carrd.co/assets/images/image02.jpg" alt="Underwater City From Below">
+                        <div class="gallery-caption">Underwater City (Below)</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://electriziedport.carrd.co/assets/images/image04.jpg" alt="Sky Temple">
+                        <div class="gallery-caption">Sky Temple</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://electrizied.carrd.co/assets/images/gallery01/47ab2db1.jpg" alt="Unknown Lands">
+                        <div class="gallery-caption">Unknown Lands</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3>Coding & UIs</h3>
+                <p>Custom Menus, Discord Linking, and Server Development.</p>
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="https://electrizied.carrd.co/assets/images/gallery03/ae5be8c6.jpg" alt="Mine GUI">
+                        <div class="gallery-caption">Prison Mine GUI</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://electrizied.carrd.co/assets/images/gallery03/b0bb52be.jpg" alt="Discord Link">
+                        <div class="gallery-caption">Custom Discord Link</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://electrizied.carrd.co/assets/images/gallery03/b9685e39.jpg" alt="Pickaxe Shop">
+                        <div class="gallery-caption">Pickaxe Shop UI</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://electriziedport.carrd.co/assets/images/image03.jpg" alt="GandziHub TAB">
+                        <div class="gallery-caption">GandziHub Custom TAB</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3>3D Modeling</h3>
+                <p>Custom tools, animals, and items.</p>
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="https://electrizied.carrd.co/assets/images/gallery02/80f5e2fa.jpg" alt="Ducks Model">
+                        <div class="gallery-caption">Duck Models</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://electrizied.carrd.co/assets/images/gallery02/2253e8a2.jpg" alt="Corrupted Sword">
+                        <div class="gallery-caption">Corrupted Sword</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://electrizied.carrd.co/assets/images/gallery02/7754d46d.jpg" alt="Nature Sword">
+                        <div class="gallery-caption">Nature Sword</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://electrizied.carrd.co/assets/images/gallery02/941a0c80.jpg" alt="3 Keys">
+                        <div class="gallery-caption">Custom Keys</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience">
+            <h2>Servers & Experience</h2>
+            <div class="panel">
+                <p>I've worked for multiple servers in the past, ranging from thousands of players to smaller communities. I usually duo Helper and Builder!</p>
+                
+                <h3><span class="good-exp">Best Experiences</span></h3>
+                <ul class="custom-list">
+                    <li><strong>Hive (Java Edition) (~8000 players):</strong> Had a great time meeting with the amazing community and working with them as a Moderator. It was such a good time. I wish Java hadn't shut down.</li>
+                    <li><strong>GandziHub (5-10 players):</strong> Found through Minehut jobs. I became the head admin and developer. I developed about 80% of the server along with its plugins, settings, TAB, etc. It turned out very professional! Me and Gandzi stayed friends.</li>
+                    <li><strong>Random Smaller Gens (5-30 players):</strong> These honestly gave me some of the best times of my life meeting so many people. Truly enjoyed my time there across all sorts of ranks.</li>
+                </ul>
+
+                <h3><span class="bad-exp">Other Experiences</span></h3>
+                <ul class="custom-list">
+                    <li><strong>Yedupe (5-40 players):</strong> A strict server where I accidentally broke a rule regarding staff chat triggers on my first day. I was later unfairly demoted due to a misunderstanding while playing with a teammate. Mostly fair, but strict.</li>
+                    <li><strong>Dupestrike (5-25 players):</strong> Highly corrupt environment. I spent hours building and moderating, only to be fired and insulted by a rage-baiting owner after dealing with a spammer. Heavily biased staff structure.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>Get In Touch</h2>
+            <div class="panel" style="text-align: center;">
+                <p>Looking for a developer, builder, or moderator for your server? Let's talk.</p>
+                <h3 style="font-size: 2em; margin: 20px 0; color: var(--light-blue);">Discord: Electrizied#0000</h3>
+                <a href="https://guns.lol/electrizied" target="_blank" class="btn btn-discord">View All Socials</a>
+            </div>
+        </section>
     </div>
 </main>
 
-<script>
-    // Handles temporary navigation placeholders
-    document.querySelectorAll('.soon-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault(); // Stop standard link behavior
-
-            // 1. Hide normal content
-            document.querySelector('.hero-title').style.display = 'none';
-            document.querySelector('.hero-subtitle').style.display = 'none';
-            document.querySelector('.buttons-container').style.display = 'none';
-
-            // 2. Show placeholder
-            document.getElementById('placeholder-text').style.display = 'block';
-        });
-    });
-
-    // Reset to normal content when "HOME" is clicked
-    document.getElementById('home-link').addEventListener('click', function(e) {
-        e.preventDefault(); // Stop standard link behavior
-
-        // 1. Show normal content
-        document.querySelector('.hero-title').style.display = 'block';
-        document.querySelector('.hero-subtitle').style.display = 'block';
-        document.querySelector('.buttons-container').style.display = 'flex';
-
-        // 2. Hide placeholder
-        document.getElementById('placeholder-text').style.display = 'none';
-    });
-</script>
+<footer>
+    <p>© 2026 Electrizied. All rights reserved.</p>
+</footer>
 
 </body>
 </html>
